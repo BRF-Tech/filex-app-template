@@ -1,0 +1,26 @@
+{
+  "manifest_version": 1,
+  "name": "rust-lines",
+  "version": "0.1.0",
+  "label": { "en": "Line count (Rust)", "tr": "Satır sayısı (Rust)" },
+  "description": {
+    "en": "A filex app written in Rust with extism-pdk: counts the lines of a text file and writes the count beside it.",
+    "tr": "extism-pdk ile Rust'ta yazılmış bir filex uygulaması: bir metin dosyasının satırlarını sayar ve sonucu yanına yazar."
+  },
+  "min_filex": "0.43.0",
+  "permissions": ["files:read", "files:write"],
+  "permission_reasons": {
+    "files:read": { "en": "To read the file you run it on.", "tr": "Üzerinde çalıştırdığınız dosyayı okumak için." },
+    "files:write": { "en": "To write the count next to it.", "tr": "Sonucu dosyanın yanına yazmak için." }
+  },
+  "languages": ["en", "tr"],
+  "actions": [
+    {
+      "id": "lines",
+      "label": { "en": "Count lines (Rust)", "tr": "Satırları say (Rust)" },
+      "applies": { "kind": "file", "ext": ["txt", "md", "csv", "log"] },
+      "min_role": "editor",
+      "output": { "mode": "sibling", "name": "{stem}-lines.txt" }
+    }
+  ]
+}

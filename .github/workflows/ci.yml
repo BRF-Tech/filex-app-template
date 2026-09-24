@@ -1,0 +1,72 @@
+name: CI
+
+# Every push to main and every pull request: format, vet, the tests (the
+# app against plugintest's fake filex) and the wasm build. The module is
+# kept as an artifact for a week, so a reviewer can install exactly what a
+# pull request builds (Admin → Plugins → Apps → Install an app → Upload files).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  go:
+    name: test and build plugin.wasm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      # The same compiler scripts/build.sh forces, so the tests and the
+      # build here are the ones you run at home.
+      - name: Use the toolchain go.mod pins
+        run: echo "GOTOOLCHAIN=$(sed -n 's/^toolchain //p' go.mod)" >> "$GITHUB_ENV"
+
+      - name: gofmt
+        run: |
+          out="$(gofmt -l .)"
+          if [ -n "$out" ]; then echo "gofmt needed:"; echo "$out"; exit 1; fi
+
+      - name: go vet
+        run: go vet ./...
+
+      - name: manifest.embed.json follows filex-app.json
+        run: |
+          go generate ./...
+          git diff --exit-code -- manifest.embed.json
+
+      - name: Tests, then plugin.wasm
+        run: bash scripts/build.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plugin-wasm
+          path: |
+            plugin.wasm
+            plugin.wasm.sha256
+            filex-app.json
+          retention-days: 7
+
+  rust-example:
+    name: examples/rust-minimal builds
+    # Delete examples/ and this job goes quiet by itself.
+    if: hashFiles('examples/rust-minimal/Cargo.toml') != ''
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: examples/rust-minimal
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build for wasm32-unknown-unknown
+        run: |
+          rustup target add wasm32-unknown-unknown
+          cargo build --locked --release --target wasm32-unknown-unknown
+          ls -l target/wasm32-unknown-unknown/release/filex_rust_minimal.wasm

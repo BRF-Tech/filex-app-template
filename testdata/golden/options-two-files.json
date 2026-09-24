@@ -1,0 +1,72 @@
+{
+  "title": {
+    "en": "Word count",
+    "tr": "Kelime sayımı"
+  },
+  "size": "md",
+  "nodes": [
+    {
+      "type": "text",
+      "props": {
+        "text": {
+          "en": "Counts the words, lines and characters of 2 files: a.txt, b.md.",
+          "tr": "2 dosyadaki kelime, satır ve karakterleri sayar: a.txt, b.md."
+        }
+      }
+    },
+    {
+      "id": "options",
+      "type": "form",
+      "props": {
+        "fields": [
+          {
+            "key": "format",
+            "type": "select",
+            "label": "Report format",
+            "required": true,
+            "options": [
+              {
+                "value": "txt",
+                "label": "Plain text (.txt)"
+              },
+              {
+                "value": "md",
+                "label": "Markdown table (.md)"
+              }
+            ]
+          },
+          {
+            "key": "top",
+            "type": "int",
+            "label": "Most frequent words to list",
+            "help": "0 lists none.",
+            "min": 0,
+            "max": 50
+          },
+          {
+            "key": "combine",
+            "type": "bool",
+            "label": "One report for all files",
+            "help": "Off: a report beside each file.",
+            "style": "switch"
+          }
+        ],
+        "values": {
+          "combine": false,
+          "format": "txt",
+          "top": 10
+        }
+      }
+    }
+  ],
+  "actions": [
+    {
+      "id": "count",
+      "label": {
+        "en": "Count",
+        "tr": "Say"
+      },
+      "primary": true
+    }
+  ]
+}

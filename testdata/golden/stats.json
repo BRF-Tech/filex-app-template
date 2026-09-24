@@ -1,0 +1,32 @@
+{
+  "nodes": [
+    {
+      "type": "text",
+      "props": {
+        "text": {
+          "en": "4 words · 2 lines · 17 characters",
+          "tr": "4 kelime · 2 satır · 17 karakter"
+        }
+      }
+    },
+    {
+      "type": "text",
+      "props": {
+        "text": {
+          "en": "Most frequent: two (2), one (1), three (1)",
+          "tr": "En sık: two (2), one (1), three (1)"
+        },
+        "tone": "muted"
+      }
+    }
+  ],
+  "actions": [
+    {
+      "id": "report",
+      "label": {
+        "en": "Write a report…",
+        "tr": "Rapor yaz…"
+      }
+    }
+  ]
+}

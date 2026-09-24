@@ -1,0 +1,12 @@
+# build output (a release attaches plugin.wasm; the repository does not carry it)
+*.wasm
+*.wasm.sha256
+
+# examples/rust-minimal
+target/
+
+# editors / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,64 @@
+{
+  "title": {
+    "en": "Word count",
+    "tr": "Kelime sayımı"
+  },
+  "size": "md",
+  "nodes": [
+    {
+      "type": "text",
+      "props": {
+        "text": {
+          "en": "Counts the words, lines and characters of notes.txt.",
+          "tr": "notes.txt dosyasındaki kelime, satır ve karakterleri sayar."
+        }
+      }
+    },
+    {
+      "id": "options",
+      "type": "form",
+      "props": {
+        "fields": [
+          {
+            "key": "format",
+            "type": "select",
+            "label": "Report format",
+            "required": true,
+            "options": [
+              {
+                "value": "txt",
+                "label": "Plain text (.txt)"
+              },
+              {
+                "value": "md",
+                "label": "Markdown table (.md)"
+              }
+            ]
+          },
+          {
+            "key": "top",
+            "type": "int",
+            "label": "Most frequent words to list",
+            "help": "0 lists none.",
+            "min": 0,
+            "max": 50
+          }
+        ],
+        "values": {
+          "format": "txt",
+          "top": 10
+        }
+      }
+    }
+  ],
+  "actions": [
+    {
+      "id": "count",
+      "label": {
+        "en": "Count",
+        "tr": "Say"
+      },
+      "primary": true
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "manifest_version": 1,
+  "name": "wordcount",
+  "version": "0.1.0",
+  "label": { "en": "Word count", "tr": "Kelime sayacı" },
+  "description": {
+    "en": "Counts the words, lines and characters of text files and writes a report beside them. The example app of the filex app template.",
+    "tr": "Metin dosyalarının kelime, satır ve karakter sayısını çıkarır ve yanlarına bir rapor yazar. filex uygulama şablonunun örnek uygulaması."
+  },
+  "icon": "details",
+  "homepage": "https://github.com/BRF-Tech/filex-app-template",
+  "min_filex": "0.43.0",
+  "permissions": ["files:read", "files:write"],
+  "permission_reasons": {
+    "files:read": {
+      "en": "To read the text files you run it on.",
+      "tr": "Üzerinde çalıştırdığınız metin dosyalarını okumak için."
+    },
+    "files:write": {
+      "en": "To write the report next to them. Nothing else is changed.",
+      "tr": "Raporu dosyaların yanına yazmak için. Başka hiçbir şey değiştirilmez."
+    }
+  },
+  "languages": ["en", "tr"],
+  "actions": [
+    {
+      "id": "count",
+      "label": { "en": "Word count…", "tr": "Kelime say…" },
+      "icon": "details",
+      "applies": {
+        "kind": "file",
+        "ext": ["txt", "md", "markdown", "csv", "tsv", "log", "json", "xml", "html", "yaml", "yml"],
+        "multi": true,
+        "max": 20
+      },
+      "view": "options",
+      "min_role": "editor",
+      "output": { "mode": "sibling", "name": "{stem}-wordcount.txt" },
+      "limits": { "timeout_s": 60 }
+    }
+  ],
+  "views": [
+    {
+      "id": "options",
+      "placement": "modal",
+      "label": { "en": "Word count", "tr": "Kelime sayımı" },
+      "size": "md"
+    },
+    {
+      "id": "stats",
+      "placement": "inspector",
+      "label": { "en": "Word count", "tr": "Kelime sayısı" },
+      "applies": {
+        "kind": "file",
+        "ext": ["txt", "md", "markdown", "csv", "tsv", "log", "json", "xml", "html", "yaml", "yml"]
+      }
+    }
+  ],
+  "limits": { "memory_pages": 1024, "call_timeout_s": 15 },
+  "wasm": {
+    "url": "https://github.com/BRF-Tech/filex-app-template/releases/download/{tag}/plugin.wasm",
+    "sha256": "ae075a0c3bdc9343b295ba0bb787a5524902583bdf915361e9af8119f9322597"
+  }
+}
