@@ -288,7 +288,6 @@ is a working reference):
 | A host call fails with `permission_denied` | the permission is not in `filex-app.json` — or the call wrote from a screen, which only a job may do |
 | A GitHub install answers `fetch_failed` | give the release's tag, not a branch |
 | The release workflow says the hash differs | the module was stamped with another compiler: keep `toolchain` in `go.mod` and build with `scripts/build.sh` |
-| A dialog opened on several files talks about only one after the first change | a filex web client limitation in 0.43.x: the dialog sends only the first file with its later events, so a job queued from it runs on that file. The API and `plugintest` carry the whole selection |
 
 ## License
 
