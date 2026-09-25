@@ -57,15 +57,15 @@ jobs:
 
   rust-example:
     name: examples/rust-minimal builds
-    # Delete examples/ and this job goes quiet by itself.
-    if: hashFiles('examples/rust-minimal/Cargo.toml') != ''
+    # Delete examples/ and this job goes quiet by itself. The condition sits
+    # on the step: GitHub does not know hashFiles() in a job-level `if:` and
+    # rejects the whole workflow file (every push ran red with no jobs).
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: examples/rust-minimal
     steps:
       - uses: actions/checkout@v4
       - name: Build for wasm32-unknown-unknown
+        if: hashFiles('examples/rust-minimal/Cargo.toml') != ''
+        working-directory: examples/rust-minimal
         run: |
           rustup target add wasm32-unknown-unknown
           cargo build --locked --release --target wasm32-unknown-unknown
