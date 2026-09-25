@@ -59,6 +59,6 @@
   "limits": { "memory_pages": 1024, "call_timeout_s": 15 },
   "wasm": {
     "url": "https://github.com/BRF-Tech/filex-app-template/releases/download/{tag}/plugin.wasm",
-    "sha256": "ae075a0c3bdc9343b295ba0bb787a5524902583bdf915361e9af8119f9322597"
+    "sha256": "b6bb514e4f833a4e2548e893109146d5d107b4d7100dc4bab73be8307eed672c"
   }
 }
