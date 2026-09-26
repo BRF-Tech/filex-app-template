@@ -7,7 +7,7 @@
     "en": "A filex app written in Rust with extism-pdk: counts the lines of a text file and writes the count beside it.",
     "tr": "extism-pdk ile Rust'ta yazılmış bir filex uygulaması: bir metin dosyasının satırlarını sayar ve sonucu yanına yazar."
   },
-  "min_filex": "0.43.0",
+  "filex": ">=0.47.0",
   "permissions": ["files:read", "files:write"],
   "permission_reasons": {
     "files:read": { "en": "To read the file you run it on.", "tr": "Üzerinde çalıştırdığınız dosyayı okumak için." },

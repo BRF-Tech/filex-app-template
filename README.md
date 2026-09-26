@@ -88,6 +88,7 @@ and everything the app does has to be declared there first:
 | `actions[]` | `count` | a file-menu row: which files (`applies`), the dialog it opens first (`view`), who may run it (`min_role`), where results go (`output`) |
 | `views[]` | `options` (modal), `stats` (inspector) | screens: a dialog, a section of the details panel, a full page or a home screen |
 | `limits` | 64 MiB, 15 s | memory and a screen's time budget; a job gets `limits.timeout_s` |
+| `min_filex` / `filex` | `min_filex: 0.43.0` | which filex versions the app works with — see [Which filex your app works with](#which-filex-your-app-works-with) |
 | `wasm` | `url`, `sha256` | where the module is downloaded from and its hash; `build.sh --stamp` writes the hash |
 
 The full list of fields, permissions, node types and host functions is in
@@ -216,10 +217,52 @@ GitHub repository**: `you/filex-invoices` and the tag (`v0.1.0`). filex reads
 `{tag}` replaced) and refuses it unless the sha256 matches. ⚠ Give the tag,
 not a branch: the module lives under a release.
 
-To ship an update, bump the version and tag again; administrators use
-**Upgrade**. An update that asks for a new permission stops at the review
-until an administrator approves it, and the old version keeps running
-meanwhile.
+To ship an update, bump the version and tag again. From filex 0.47 an app
+installed from GitHub **follows its releases**: once a day (or when an
+administrator presses **Check for updates**) filex reads the newest GitHub
+*release* — not a draft, not a pre-release — whose `filex-app.json` at that tag
+names the app and whose `filex` range lets that server in, and installs it by
+itself when it asks for **no new permission**. An update that asks for a new
+permission is never installed by itself: it waits on the Apps tab as *Needs
+approval* until an administrator reviews it, and the old version keeps
+running meanwhile. So:
+
+- publish a GitHub **release** for every tag (the Release workflow does) —
+  a tag without a release is not seen;
+- keep `version` equal to the tag, and never move a tag after it is
+  published: servers pin the module by the hash the manifest said;
+- keep the permissions if you want the update to arrive by itself;
+- say the filex versions a release needs (below), so servers that have not
+  upgraded keep the version that works for them.
+
+Details: [Updates](https://github.com/BRF-Tech/filex/blob/main/docs/APP-PLUGINS.md#updates)
+and [Publishing so updates are found](https://github.com/BRF-Tech/filex/blob/main/docs/PLUGIN-KIT.md#publishing-so-updates-are-found).
+
+## Which filex your app works with
+
+`filex` in `filex-app.json` is a range of filex versions, written as a small
+subset of the npm/Cargo syntax — comparators joined by a space must all hold,
+alternatives are joined by `||`, versions are `MAJOR.MINOR.PATCH`:
+
+```json
+"filex": ">=0.47.0"
+"filex": ">=0.47.0 <0.60.0"
+```
+
+filex refuses to install or upgrade to a version whose range leaves it out
+(the install review says so first), and its update check takes the newest
+release whose range fits. The older `min_filex` (`"0.43.0"` = `>=0.43.0`) is
+still honoured. The Rust example ([examples/rust-minimal](examples/rust-minimal/filex-app.json))
+declares `"filex": ">=0.47.0"`.
+
+⚠ This template's own `filex-app.json` still says `min_filex`: filex before
+0.47 — and the SDK this template builds against (`go.mod`: backend v0.45.1),
+whose manifest tests decode `filex-app.json` the way filex does
+(`readManifestFile` in `main_test.go`) — refuse a manifest with a field they
+do not know. Once `go.mod` requires
+backend v0.47.0 or later, replace `"min_filex": "0.43.0"` with
+`"filex": ">=0.47.0"` (and run `go generate ./...`). Keep `min_filex` for as
+long as your app must also install on filex 0.43–0.46.
 
 ## The permission model
 
